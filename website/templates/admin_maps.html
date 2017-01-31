@@ -11,7 +11,7 @@
     {% if house_location %}
         <style>
             #map {
-                height: 400px;
+                height: 600px;
                 width: 100%;
             }
         </style>
@@ -21,9 +21,9 @@
         <script>
 
                 function initMap() {
-                    var uluru = {lat: -25.363, lng: 131.044};
+                    var uluru = {lat: 54.503595, lng: -4.229679};
                     var map = new google.maps.Map(document.getElementById('map'), {
-                        zoom: 4,
+                        zoom: 5,
                         center: uluru
                     });
                     var marker_list = [];
@@ -39,6 +39,6 @@
         <script async defer
                 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhzb5iJ4fJUdLDQKt_SgCSP5_Z2eXhH5k&callback=initMap">
         </script>
-
+<br>
     {% endif %}
 {% endblock %}
