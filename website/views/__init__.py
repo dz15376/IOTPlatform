@@ -1,7 +1,13 @@
 from flask import render_template
 
-from website import app
-
+from main import app
+import data_interface
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
+import views.devices
+import views.rooms
+import views.admin
+from views.forms import AddNewRoomForm
 
 @app.route('/triggers')
 def triggers():
@@ -9,9 +15,18 @@ def triggers():
 
 
 @app.route('/')
-def index():
-    rooms = ['Kitchen', 'Bathroom']
-    return render_template("home.html", rooms=rooms)
+def index(add_new_room_form=None):
+    if add_new_room_form is None:
+        add_new_room_form = AddNewRoomForm()
+    rooms = data_interface.get_user_default_rooms()
+    return render_template("home.html", rooms=rooms, new_room_form=add_new_room_form)
+
+
+@app.route('/admin/user/<string:user_id>')
+def admin_index(user_id):
+    rooms = data_interface.get_default_rooms_for_user(user_id)
+    user_info = data_interface.get_user_info(user_id)
+    return render_template("home.html", admin=True, rooms=rooms, user_name=user_info["name"])
 
 
 @app.route('/logout')
@@ -24,58 +39,16 @@ def account_settings():
     return "To be implemented"
 
 
-@app.route('/device/actions')
-def device_actions():
-    return render_template("deviceactions.html")
+@app.route('/help')
+def help():
+    return render_template("help.html")
 
 
-@app.route('/room/<string:room_id>')
-def room_view(room_id):
-    print(room_id)
-    thermostatDict = {"Name": "Thermostat", "Property": "24℃"}
-
-    lightSwitchDict1 = {"Name": "A", "Property": "On"}
-    lightSwitchDict2 = {"Name": "B", "Property": "On"}
-    lightSwitchDict3 = {"Name": "C", "Property": "Off"}
-
-    doorsensorDict1 = {"Name": "A", "Property": "4:20am"}
-    doorsensorDict2 = {"Name": "B", "Property": "2:40pm"}
-    doorsensorDict3 = {"Name": "C", "Property": "12:24pm"}
-
-    motionsensorDict1 = {"Name": "South Window", "Property": "Closed"}
-    motionsensorDict2 = {"Name": "East Window", "Property": "Closed"}
-    motionsensorDict3 = {"Name": "Door", "Property": "Open"}
-
-    thermostats = [thermostatDict]
-    light_switches = [lightSwitchDict1, lightSwitchDict2, lightSwitchDict3]
-    door_sensors = [doorsensorDict1, doorsensorDict2, doorsensorDict3]
-    motion_sensors = [motionsensorDict1, motionsensorDict2, motionsensorDict3]
-
-    return render_template("roomview.html", thermostats=thermostats, light_switches=light_switches,
-                           door_sensors=door_sensors, motion_sensors=motion_sensors)
+status = ['Enabled', 'Disabled']
+themeinfo = [{'id': '1', 'name': 'Weekend Away Theme', 'theme_status': status[0]},
+             {'id': '2', 'name': 'Night Party Theme', 'theme_status': status[1]}]
 
 
-@app.route('/devices')
-def devices():
-    return render_template("devices.html")
-
-
-@app.route('/admin')
-def admin():
-    user_dic = {
-        "user_id": "324123",
-        "user_email_address": "wx15879@my.bristol.ac.uk",
-        "user_is_admin": "Yes",
-        "user_first_name": "Jack",
-        "user_last_name": "Xia",
-        "user_device_status": "Fault"}
-    userList = [user_dic]
-    return render_template("admin.html", users=userList)
-
-@app.route('/admin_map')
-def admin_map():
-    house1 = {'lat' : -20.000, 'lng': -179.000}
-    house2 = {'lat' : -50.000, 'lng': 45.000}
-    house3 = {'lat' :  10.000, 'lng': 120.000}
-    house_location = [house1, house2, house3]
-    return render_template("admin_maps.html", house_location = house_location)
+@app.route('/themes')
+def themes():
+    return render_template("themes.html", themeinfo=themeinfo, status=status)
