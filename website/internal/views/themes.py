@@ -22,12 +22,10 @@ def new_theme():
 
 @internal_site.route('/themes')
 def themes():
-    themes = [{
-        'theme_id',
-        'name',
-        'user_id',
-        'settings',
-        'active'
-    }]
+    lights = data_interface.get_device_info('5909f44c923149003cb82561')
+    devices = {}
     themes = data_interface.get_user_themes(get_active_user()['user_id'])
-    return render_template("internal/themes.html", themes=themes)
+    for theme in themes:
+        for device in theme['settings']:
+            devices[device['device_id']] = (data_interface.get_device_info(device['device_id']))['name']
+    return render_template("internal/themes.html", themes=themes, upperdev=devices, lights=lights)
