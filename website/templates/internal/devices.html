@@ -12,6 +12,22 @@
 {% block page_content %}
     <h2>Devices</h2>
     <br>
+    <div class="btn-group">
+        <button class="btn btn-default dropdown-toggle" type="button" id="btn-add-device-select-vendor"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Add device
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdown-device-vendor">
+            {% for vendor in all_vendors %}
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#modal-add-device-vendor-{{ vendor.id }}">
+                        Vendor: {{ vendor.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
     <span data-toggle="modal" data-target="#myModal2">
         <button class="btn btn-default" type="submit">Move device to different room</button>
     </span>
@@ -78,22 +94,6 @@
             </div>
         </div>
     {% endfor %}
-    <div class="btn-group">
-        <button class="btn btn-default dropdown-toggle" type="button" id="btn-add-device-select-vendor"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Add device
-            <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdown-device-vendor">
-            {% for vendor in all_vendors %}
-                <li>
-                    <a href="#" data-toggle="modal" data-target="#modal-add-device-vendor-{{ vendor.id }}">
-                        Vendor: {{ vendor.name }}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
     <br>
     <br>
     <!-- TODO: separate ifs for linked and unlinked devices -->

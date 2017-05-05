@@ -20,7 +20,7 @@ def init_hardcoded_data():
                                                        name="Dr No",
                                                        is_admin=True)
     user_data = [
-        ("James Bond", "james@bond.com"),
+        ("Ana Johnson", "ana@bond.com"),
         ("M", "m@bond.com"),
         ("Miss Moneypenny", "money@bond.com"),
         ("Q", "q@bond.com"),

@@ -12,16 +12,16 @@
         <h3>Faulty devices</h3>
         <table class="table table-striped">
             <tr>
-                <th>Type of of fault</th>
-                <th>Number</th>
+                <th>User</th>
+                <th>Status</th>
             </tr>
             {% for fault in faults_list %}
                 <tr>
                     <td>
-                        {{ fault[0] }}
+                        Alice Bond
                     </td>
                     <td>
-                       {{ fault[1] }}
+                       1 Fault detected
                     </td>
                 </tr>
             {% endfor %}
